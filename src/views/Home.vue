@@ -1,14 +1,24 @@
 <template>
   <div class="home">
-    <v-btn>Hello</v-btn>
+    <List :items="users" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-
+import { mapActions, mapState } from "vuex";
+import List from "@/components/List";
 export default {
   name: "home",
-  components: {}
+  components: { List },
+  mounted() {
+    this.fetchAll();
+  },
+  computed: {
+    ...mapState(["users"])
+  },
+  methods: {
+    ...mapActions(["fetchAll"])
+  }
 };
 </script>
