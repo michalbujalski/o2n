@@ -1,0 +1,12 @@
+{
+  "name": "o2n-backend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "server-api": "json-server db.json"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "json-server": "^0.15.1"
+  }
+}

@@ -32,9 +32,7 @@
 export default {
   props: ["items"],
   methods: {
-    click() {
-      console.log("click");
-    }
+    click() {}
   }
 };
 </script>
