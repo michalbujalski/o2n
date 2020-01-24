@@ -17,12 +17,12 @@ export default new Vuex.Store({
   },
   actions: {
     async fetchDetails({ commit }, userId) {
-      const response = await fetch(`http://localhost:3000/users/${userId}`);
+      const response = await fetch(`http://localhost:8000/users/${userId}`);
       const data = await response.json();
       commit("SET_USER_DETAILS", data);
     },
     async fetchAll({ commit }) {
-      const response = await fetch("http://localhost:3000/users");
+      const response = await fetch("http://localhost:8000/users");
       const data = await response.json();
       const parsedData = data.map(item => ({
         id: item.id,
