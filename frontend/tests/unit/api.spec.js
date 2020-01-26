@@ -13,14 +13,16 @@ describe("api", () => {
     const query = {
       selectedCompanies: ["a", "b"],
       minAge: 20,
-      maxAge: 40
+      maxAge: 40,
+      sortBy: "age"
     };
     const result = api.parseParams(query);
-    expect(result).toHaveLength(4);
+    expect(result).toHaveLength(5);
     expect(result).toContain("age_gte=20");
     expect(result).toContain("age_lte=40");
     expect(result).toContain("company=a");
     expect(result).toContain("company=b");
+    expect(result).toContain("_sort=age")
   });
   it("check if query is valid when params are valid", () => {
     const query = {

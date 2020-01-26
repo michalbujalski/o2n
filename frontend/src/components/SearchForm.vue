@@ -1,23 +1,25 @@
 <template>
-  <v-container>
-    <v-row>
-      <v-col md="3">
-        <v-select
-          v-model="ageSelected"
-          :items="ageItems"
-          label="age"
-          @change="onAgeSelect"
-        ></v-select>
-      </v-col>
-      <v-col md="3">
-        <v-select
-          v-model="selectedSortBy"
-          :items="sortByItems"
-          label="Sort by"
-          @change="onAgeOrderSelect"
-        ></v-select>
-      </v-col>
-    </v-row>
+  <div>
+    <v-container>
+      <v-row no-gutters>
+        <v-col sm="6" xs="12" cols="12">
+          <v-select
+            v-model="ageSelected"
+            :items="ageItems"
+            label="age"
+            @change="onAgeSelect"
+          ></v-select>
+        </v-col>
+        <v-col sm="6" xs="12" cols="12">
+          <v-select
+            v-model="selectedSortBy"
+            :items="sortByItems"
+            label="Sort by"
+            @change="onAgeOrderSelect"
+          ></v-select>
+        </v-col>
+      </v-row>
+    </v-container>
     <v-select
       v-model="selectedCompanies"
       :items="companies"
@@ -25,7 +27,7 @@
       label="Companies"
       multiple
     ></v-select>
-  </v-container>
+  </div>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";

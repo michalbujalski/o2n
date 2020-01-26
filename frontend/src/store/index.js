@@ -15,6 +15,7 @@ const getCached = () => {
   }
   return {
     users: [],
+    userData: null,
     companies: [],
     page: 1,
     isLoading: false,
@@ -56,6 +57,7 @@ export default new Vuex.Store({
       commit("SET_QUERY", query);
     },
     async fetchDetails({ commit }, userId) {
+      commit("SET_USER_DETAILS", null);
       commit("SET_IS_LOADING", true);
       const data = await api.fetchUserDetails(userId);
       commit("SET_USER_DETAILS", data);
