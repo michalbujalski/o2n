@@ -16,6 +16,8 @@ const getCached = () => {
   return {
     users: [],
     companies: [],
+    page: 1,
+    isLoading: false,
     query: {
       minAge: null,
       maxAge: null,
@@ -41,6 +43,12 @@ export default new Vuex.Store({
     },
     SET_USERS(state, newList) {
       Vue.set(state, "users", newList);
+    },
+    SET_PAGE(state, page) {
+      Vue.set(state, "page", page);
+    },
+    SET_IS_LOADING(state, isLoading) {
+      Vue.set(state, "isLoading", isLoading);
     }
   },
   actions: {
@@ -48,20 +56,29 @@ export default new Vuex.Store({
       commit("SET_QUERY", query);
     },
     async fetchDetails({ commit }, userId) {
+      commit("SET_IS_LOADING", true);
       const data = await api.fetchUserDetails(userId);
       commit("SET_USER_DETAILS", data);
+      commit("SET_IS_LOADING", false);
     },
     async fetchAll({ commit }) {
+      commit("SET_IS_LOADING", true);
       const data = await api.fetchAllUsers();
-
       commit("SET_USERS", parseUsers(data));
       commit("SET_COMPANIES", parseCompanies(data));
+      commit("SET_IS_LOADING", false);
     },
     async fetchFiltered({ commit }, query) {
+      commit("SET_IS_LOADING", true);
       const data = await api.fetchFilteredUsers(
         api.parseUrl(api.parseParams(query))
       );
+      commit("SET_PAGE", 1);
       commit("SET_USERS", parseUsers(data));
+      commit("SET_IS_LOADING", false);
+    },
+    setPage({ commit }, page) {
+      commit("SET_PAGE", page);
     }
   },
   plugins: [cache],
