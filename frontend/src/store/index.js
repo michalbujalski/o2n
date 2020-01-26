@@ -1,21 +1,34 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import * as api from "@/api";
 import { parseCompanies, parseUsers } from "@/utils";
 
-Vue.use(Vuex);
+const cache = store => {
+  store.subscribe((mutation, state) => {
+    localStorage.setItem("STATE", JSON.stringify(state));
+  });
+};
 
-export default new Vuex.Store({
-  state: {
+const getCached = () => {
+  if (localStorage.getItem("STATE")) {
+    return JSON.parse(localStorage.getItem("STATE"));
+  }
+  return {
     users: [],
     companies: [],
     query: {
       minAge: null,
       maxAge: null,
-      ageOrder: null,
+      sortBy: null,
       selectedCompanies: []
     }
-  },
+  };
+};
+
+Vue.use(Vuex);
+
+export default new Vuex.Store({
+  state: getCached(),
   mutations: {
     SET_COMPANIES(state, companies) {
       Vue.set(state, "companies", companies);
@@ -35,17 +48,22 @@ export default new Vuex.Store({
       commit("SET_QUERY", query);
     },
     async fetchDetails({ commit }, userId) {
-      const response = await fetch(`http://localhost:8000/users/${userId}`);
-      const data = await response.json();
+      const data = await api.fetchUserDetails(userId);
       commit("SET_USER_DETAILS", data);
     },
     async fetchAll({ commit }) {
-      const response = await fetch("http://localhost:8000/users");
-      const data = await response.json();
+      const data = await api.fetchAllUsers();
 
       commit("SET_USERS", parseUsers(data));
       commit("SET_COMPANIES", parseCompanies(data));
+    },
+    async fetchFiltered({ commit }, query) {
+      const data = await api.fetchFilteredUsers(
+        api.parseUrl(api.parseParams(query))
+      );
+      commit("SET_USERS", parseUsers(data));
     }
   },
+  plugins: [cache],
   modules: {}
 });

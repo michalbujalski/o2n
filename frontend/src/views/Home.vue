@@ -10,21 +10,24 @@
 import { mapActions, mapState } from "vuex";
 import List from "@/components/List";
 import SearchForm from "@/components/SearchForm";
+import { hasValidQuery } from "@/api";
 export default {
   name: "home",
   components: { SearchForm, List },
   created() {
-    this.fetchAll();
+    if (!hasValidQuery(this.query)) {
+      this.fetchAll();
+    }
   },
   computed: {
-    ...mapState(["users"])
+    ...mapState(["users", "query"])
   },
   methods: {
-    ...mapActions(["fetchAll"])
+    ...mapActions(["fetchAll", "fetchFiltered"])
   },
   watch: {
-    query (newQuery) {
-      console.log(newQuery);
+    query(newQuery) {
+      this.fetchFiltered(newQuery);
     }
   }
 };

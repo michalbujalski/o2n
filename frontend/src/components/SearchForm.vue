@@ -1,13 +1,23 @@
 <template>
-  <div>
-    <h1>title</h1>
-    <p>{{ JSON.stringify(query) }}</p>
-    <v-select :items="ageItems" label="age" @change="onAgeSelect"></v-select>
-    <v-select
-      :items="ageOrder"
-      label="Order by age"
-      @change="onAgeOrderSelect"
-    ></v-select>
+  <v-container>
+    <v-row>
+      <v-col md="3">
+        <v-select
+          v-model="ageSelected"
+          :items="ageItems"
+          label="age"
+          @change="onAgeSelect"
+        ></v-select>
+      </v-col>
+      <v-col md="3">
+        <v-select
+          v-model="selectedSortBy"
+          :items="sortByItems"
+          label="Sort by"
+          @change="onAgeOrderSelect"
+        ></v-select>
+      </v-col>
+    </v-row>
     <v-select
       v-model="selectedCompanies"
       :items="companies"
@@ -15,10 +25,11 @@
       label="Companies"
       multiple
     ></v-select>
-  </div>
+  </v-container>
 </template>
 <script>
 import { mapState, mapActions } from "vuex";
+const PERIOD = 9;
 const getItem = (startAge, period) => {
   return {
     text: `${startAge} - ${startAge + period}`,
@@ -40,7 +51,7 @@ const getItems = (minAge, maxAge) => {
     }
   ];
   for (let age = minAge; age < maxAge; age += 10) {
-    items.push(getItem(age, 9));
+    items.push(getItem(age, PERIOD));
   }
   return items;
 };
@@ -49,10 +60,21 @@ const NONE = "none";
 export default {
   data() {
     return {
+      ageSelected: null,
       ageItems: getItems(0, 100),
-      ageOrder: [NONE, "ascending", "descending"],
+      sortByItems: [NONE, "age", "company"],
+      selectedSortBy: null,
       selectedCompanies: []
     };
+  },
+  mounted() {
+    if (this.query.minAge) {
+      this.ageSelected = getItem(this.query.minAge, PERIOD);
+    }
+    if (this.query.sortBy) {
+      this.selectedSortBy = this.query.sortBy;
+    }
+    this.selectedCompanies = this.query.selectedCompanies;
   },
   computed: {
     ...mapState(["query", "companies"])
@@ -62,8 +84,8 @@ export default {
     onAgeSelect(e) {
       this.setQuery({ ...this.query, minAge: e.minAge, maxAge: e.maxAge });
     },
-    onAgeOrderSelect(order) {
-      this.setQuery({ ...this.query, ageOrder: order !== NONE ? order : null });
+    onAgeOrderSelect(sortBy) {
+      this.setQuery({ ...this.query, sortBy: sortBy !== NONE ? sortBy : null });
     }
   },
   watch: {
