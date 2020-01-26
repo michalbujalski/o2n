@@ -12,14 +12,9 @@ export default {
       isLoading: false
     };
   },
-  async mounted() {
+  async created() {
     this.isLoading = true;
     await this.fetchDetails(this.$route.params.userId);
-    await new Promise(resolve => {
-      setTimeout(() => {
-        resolve();
-      }, 5000);
-    });
     this.isLoading = false;
   },
   methods: {

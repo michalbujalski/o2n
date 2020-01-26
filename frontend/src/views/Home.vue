@@ -1,6 +1,7 @@
 <template>
-  <div class="home">
-    <List :items="users" />
+  <div>
+    <search-form></search-form>
+    <list :items="users" />
   </div>
 </template>
 
@@ -8,10 +9,11 @@
 // @ is an alias to /src
 import { mapActions, mapState } from "vuex";
 import List from "@/components/List";
+import SearchForm from "@/components/SearchForm";
 export default {
   name: "home",
-  components: { List },
-  mounted() {
+  components: { SearchForm, List },
+  created() {
     this.fetchAll();
   },
   computed: {
@@ -19,6 +21,11 @@ export default {
   },
   methods: {
     ...mapActions(["fetchAll"])
+  },
+  watch: {
+    query (newQuery) {
+      console.log(newQuery);
+    }
   }
 };
 </script>

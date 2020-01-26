@@ -1,13 +1,28 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import { parseCompanies, parseUsers } from "@/utils";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    users: []
+    users: [],
+    companies: [],
+    query: {
+      minAge: null,
+      maxAge: null,
+      ageOrder: null,
+      selectedCompanies: []
+    }
   },
   mutations: {
+    SET_COMPANIES(state, companies) {
+      Vue.set(state, "companies", companies);
+    },
+    SET_QUERY(state, query) {
+      Vue.set(state, "query", query);
+    },
     SET_USER_DETAILS(state, userData) {
       Vue.set(state, "userDetails", userData);
     },
@@ -16,6 +31,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    setQuery({ commit }, query) {
+      commit("SET_QUERY", query);
+    },
     async fetchDetails({ commit }, userId) {
       const response = await fetch(`http://localhost:8000/users/${userId}`);
       const data = await response.json();
@@ -24,15 +42,9 @@ export default new Vuex.Store({
     async fetchAll({ commit }) {
       const response = await fetch("http://localhost:8000/users");
       const data = await response.json();
-      const parsedData = data.map(item => ({
-        id: item.id,
-        age: item.age,
-        company: item.company,
-        email: item.email,
-        firstName: item.name.first,
-        lastName: item.name.last
-      }));
-      commit("SET_USERS", parsedData);
+
+      commit("SET_USERS", parseUsers(data));
+      commit("SET_COMPANIES", parseCompanies(data));
     }
   },
   modules: {}
