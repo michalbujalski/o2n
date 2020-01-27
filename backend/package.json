@@ -1,0 +1,13 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "Simple backned",
+  "scripts": {
+    "start": "json-server db.json --port 8000",
+    "prod": "json-server db.json -H 0.0.0.0 -p 8000"
+  },
+  "author": "Michal Bujalski",
+  "dependencies": {
+    "json-server": "^0.15.1"
+  }
+}

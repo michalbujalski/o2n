@@ -5,17 +5,18 @@ services:
     container_name: o2n-front-prod
     volumes:
       - '/frontend/app'
-      - '/frontend/node_modules'
     build:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
   backend-prod:
-    image: vimagick/json-server
-    command: -H 0.0.0.0 -p 8000 -w db.json
-    volumes:
-      - './backend:/data'
+    container_name: o2n-backend-prod
+    volumes: 
+      - ./backend/db.json:/data/db.json
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     restart: always
