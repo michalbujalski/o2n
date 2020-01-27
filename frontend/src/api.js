@@ -1,17 +1,17 @@
 export const fetchAllUsers = async () => {
-  const response = await fetch("http://localhost:8000/users");
+  const response = await fetch(`${process.env.API_URL}/users`);
   const data = await response.json();
   return data;
 };
 
 export const fetchUserDetails = async userId => {
-  const response = await fetch(`http://localhost:8000/users/${userId}`);
+  const response = await fetch(`${process.env.API_URL}/users/${userId}`);
   const data = await response.json();
   return data;
 };
 
 export const fetchFilteredUsers = async params => {
-  const response = await fetch(`http://localhost:8000/users${params}`);
+  const response = await fetch(`${process.env.API_URL}/users${params}`);
   const data = await response.json();
   return data;
 };
