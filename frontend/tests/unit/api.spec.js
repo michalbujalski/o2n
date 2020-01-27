@@ -22,7 +22,7 @@ describe("api", () => {
     expect(result).toContain("age_lte=40");
     expect(result).toContain("company=a");
     expect(result).toContain("company=b");
-    expect(result).toContain("_sort=age")
+    expect(result).toContain("_sort=age&_order=asc");
   });
   it("check if query is valid when params are valid", () => {
     const query = {
