@@ -14,7 +14,7 @@ export const fetchFilteredUsers = async params => {
   const response = await fetch(`http://localhost:8000/users${params}`);
   const data = await response.json();
   return data;
-}
+};
 
 export const parseParams = query => {
   let urlParams = [];
@@ -37,11 +37,12 @@ export const parseParams = query => {
 
 export const hasValidQuery = query => {
   return query.minAge || query.maxAge || query.selectedCompanies.length > 0;
-}
+};
 
 export const parseUrl = params =>
-  params.reduce((prev, current, idx) => {
-    return `${prev}${idx !== 0 ? "&" : ""}${current}`;
+  params.reduce(
+    (prev, current, idx) => {
+      return `${prev}${idx !== 0 ? "&" : ""}${current}`;
     },
     params.length > 0 ? "?" : ""
   );
